@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<title>Rigid body - Physijs</title>
+	
+	<link rel="stylesheet" type="text/css" href="css/styles.css" />
+	
+	<script type="text/javascript" src="js/three.min.js"></script>
+	<script type="text/javascript" src="js/stats.js"></script>
+	<script type="text/javascript" src="../physi.js"></script>
+	
+	<script type="text/javascript">
+	
+	'use strict';
+	
+	Physijs.scripts.worker = '../physijs_worker.js';
+	Physijs.scripts.ammo = 'examples/js/ammo.js';
+	
+	var initScene, render, applyForce, setMousePosition, mouse_position,
+		floor_material, sphere_material, loader,
+		renderer, render_stats, physics_stats, scene, floor, light, camera, sphere, spherees = [];
+	
+	initScene = function() {
+		renderer = new THREE.WebGLRenderer({ antialias: true });
+		renderer.setSize( window.innerWidth, window.innerHeight );
+		renderer.shadowMap.enabled = true;
+		renderer.shadowMapSoft = true;
+		document.getElementById( 'viewport' ).appendChild( renderer.domElement );
+		
+		render_stats = new Stats();
+		render_stats.domElement.style.position = 'absolute';
+		render_stats.domElement.style.top = '1px';
+		render_stats.domElement.style.zIndex = 100;
+		document.getElementById( 'viewport' ).appendChild( render_stats.domElement );
+
+		physics_stats = new Stats();
+		physics_stats.domElement.style.position = 'absolute';
+		physics_stats.domElement.style.top = '50px';
+		physics_stats.domElement.style.zIndex = 100;
+		document.getElementById( 'viewport' ).appendChild( physics_stats.domElement );
+		
+		scene = new Physijs.Scene;
+		scene.setGravity(new THREE.Vector3( 0, -30, 0 ));
+		scene.addEventListener(
+			'update',
+			function() {
+				applyForce();
+				scene.simulate( undefined, 1 );
+				physics_stats.update();
+			}
+		);
+		
+		camera = new THREE.PerspectiveCamera(
+			35,
+			window.innerWidth / window.innerHeight,
+			1,
+			1000
+		);
+		camera.position.set( 60, 50, 60 );
+		camera.lookAt( scene.position );
+		scene.add( camera );
+		
+		// Light
+		light = new THREE.DirectionalLight( 0xFFFFFF );
+		light.position.set( 20, 40, -15 );
+		light.target.position.copy( scene.position );
+		light.castShadow = true;
+		light.shadowCameraLeft = -60;
+		light.shadowCameraTop = -60;
+		light.shadowCameraRight = 60;
+		light.shadowCameraBottom = 60;
+		light.shadowCameraNear = 20;
+		light.shadowCameraFar = 200;
+		light.shadowBias = -.0001
+		light.shadowMapWidth = light.shadowMapHeight = 2048;
+		light.shadowDarkness = .7;
+		scene.add( light );
+
+		// Loader
+		loader = new THREE.TextureLoader();
+		
+		// Materials
+		floor_material = Physijs.createMaterial(
+			new THREE.MeshLambertMaterial({ color: 0x333333 }),
+			.4, // high friction
+			2.8 // low restitution
+		);
+		// ground_material.map.wrapS = ground_material.map.wrapT = THREE.RepeatWrapping;
+		// ground_material.map.repeat.set( 3, 3 );
+		
+		sphere_material = Physijs.createMaterial(
+			new THREE.MeshLambertMaterial({ color: Math.random() * 0xFFFFFF }),
+			.1, // low friction
+			.4 // high restitution
+		);
+		// sphere_material.map.wrapS = ground_material.map.wrapT = THREE.RepeatWrapping;
+		// sphere_material.map.repeat.set( .25, .25 );
+		
+		// Ground
+		floor = new Physijs.BoxMesh(
+			new THREE.BoxGeometry(100, 1, 100),
+			floor_material,
+			0 // mass
+		);
+		floor.receiveShadow = true;
+		scene.add( floor );
+		
+		for ( var i = 0; i < 1; i++ ) {
+			sphere = new Physijs.SphereMesh(
+				new THREE.SphereGeometry( 5, 32, 32 ),
+				sphere_material
+			);
+			sphere.position.set(
+				Math.random() * 50 - 25,
+				10 + Math.random() * 5,
+				Math.random() * 50 - 25
+			);
+			sphere.rotation.set(
+				Math.random() * Math.PI * 2,
+				Math.random() * Math.PI * 2,
+				Math.random() * Math.PI * 2
+			);
+			// sphere.scale.set(
+			// 	Math.random() * 1 + .5,
+			// 	Math.random() * 1 + .5,
+			// 	Math.random() * 1 + .5
+			// );
+			sphere.castShadow = true;
+			scene.add( sphere );
+			spherees.push( sphere );
+		}
+		
+		// renderer.domElement.addEventListener( 'mousemove', setMousePosition );
+
+		requestAnimationFrame( render );
+		scene.simulate();
+	};
+	
+	render = function() {
+		floor.rotation.x = .1;
+
+		requestAnimationFrame( render );
+		renderer.render( scene, camera );
+		render_stats.update();
+	};
+	
+	
+	applyForce = function() {
+		if (!mouse_position) return;
+		var strength = 35, distance, effect, offset, sphere;
+		
+		for ( var i = 0; i < spherees.length; i++ ) {
+			sphere = spherees[i];
+			distance = mouse_position.distanceTo( sphere.position ),
+			effect = mouse_position.clone().sub( sphere.position ).normalize().multiplyScalar( strength / distance ).negate(),
+			offset = mouse_position.clone().sub( sphere.position );
+			sphere.applyImpulse( effect, offset );
+		}
+	};
+	
+	window.onload = initScene;
+	
+	</script>
+</head>
+
+<body>
+	<div id="heading">
+		<h1>Rigid Body + User Interaction</h1>
+		<p>Move your cursor near the spherees to push them.</p>
+	</div>
+	<div id="viewport"></div>
+</body>
+
+</html>

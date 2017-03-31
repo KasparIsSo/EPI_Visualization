@@ -1,0 +1,213 @@
+html, body{
+	padding: 0px;
+	margin: 0px;
+}
+
+#background{
+	/*filter: blur(5px);*/
+	filter: saturate(20%);
+	/*filter: ;*/
+	background-image: linear-gradient(#FFE47A, #FFE47A 60%, #3D7EAA); /* making a gradient for the background */
+	position: fixed;
+	padding: 0;
+	margin: 0;
+	top: 0px;
+	left: 0px;
+	width: 100vw;
+	height: 100vh;
+	z-index: -1;
+}
+
+* {
+	font-family: "Roboto Slab", Sans-Serif;
+}
+
+*:focus{
+	outline: 0;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {   /* removes the up and down arrows in the value input box */
+	-webkit-appearance: none;        /* http://stackoverflow.com/questions/3790935/can-i-hide-the-html5-number-input-s-spin-box */
+} 
+
+@media only screen and (max-width : 1600px) { /* media queries for responsive styling */
+
+.countryInfo{
+	background-color: #1B998B;
+	width: 250px;
+	position: fixed;
+	z-index: 900;
+	top: 25px;
+	left: 25px;
+	height: auto;
+	padding: 10px;
+}
+
+.countryInfoFlag {
+	clear: both;
+	float: left;
+	height: 100px;
+	width: auto;
+}
+
+#countryName{
+	background: rgba(27, 153, 139, .7); /* rgb for 1B998B */
+	width: 150px;
+	height: 20px;
+	padding-top: 1px;
+	position: fixed;
+	text-align: center;
+	pointer-events: none;
+	font-family: "Share Tech Mono", monospace;
+}
+
+#menu{
+	background-color: #1B998B;
+	width: 300px;
+	position: fixed;
+	z-index: 900;
+	right: 25px;
+	top: 25px;
+}
+
+#headerDiv{
+	padding: 10px 10px 0px;
+}
+
+#uiHeader{
+	font-size: 20px;
+	margin: 0px;
+	color: #EDAE49;
+}
+
+.factor{
+	margin: 10px;
+	color: #444444;
+	font-size: 16px;
+}
+
+.slider{
+	float: right;
+	margin-top: 6px;
+}
+
+.sliderInput{ /* styles the displayed value beside the sliders*/
+	/-webkit-appearance: none;
+	width: 50px;
+	background-color: #168276;
+	border: none;
+	color: #ffffff;
+	margin: 0px 0px 0px 5px;
+	font-size: 16px;
+	float: right;
+}
+
+input[type=range].slider{ /*styles the slider with class slider*/
+	-webkit-appearance: none;
+	border-radius: 8px;
+	height: 10px;
+	width: 130px;
+	background-color: #168276; 
+}
+
+
+input[type='range'].slider::-webkit-slider-thumb{ /*styles the slider thumb (what you're supposed to click and drag) with class slider*/
+	-webkit-appearance: none;
+	background-color: #76c7db;
+	border: none;
+	width: 20px;
+	height: 20px;
+	border-radius: 10px;
+	cursor: pointer;
+}
+
+#sliderInputS{
+	color: #d58b15;
+}
+
+#leaderboard{
+	width: 260px;
+	height: 300px;
+	margin: 10px;
+	padding: 10px;
+	background-color: #168276;
+	color: #ffffff;
+	font-family: "Share Tech Mono", monospace;
+	overflow: scroll;
+
+}
+
+.leaderboardInfo{
+	font-family: "Share Tech Mono", monospace;
+}
+
+.popUp{ /*styles popup's close button*/ 
+	-webkit-appearance: none;
+	padding: 0px;
+	margin: 5px;
+	border: none;
+	width: 15px;
+	height: 15px;
+	color: #ffffff;
+}
+
+.uiButtons{
+	-webkit-appearance: none;
+	z-index: 910;
+	width: 135px;
+	height: 50px;
+	border: none;
+	background-color: #76c7db;
+}
+
+.uiButtons a{
+	font-size: 14px;
+}
+
+#generate{
+	margin: 0px 10px 10px 5px;
+}
+
+#algorithm{
+	margin: 0px 5px 10px 10px;
+	background-color: #168276;
+}
+
+#calculations{ /*shown when clicked algoritm button*/
+	width: 50vw;
+	height: 50px;
+	margin: 0 auto;
+	position: fixed;
+	z-index: 900;
+	left: 25vw;
+	bottom: 20px;
+	background-color: #168276;
+	border: #1B998B solid 5px;
+	text-align: center;
+	padding-top: 20px;
+}
+
+#calculations a{
+	vertical-align: middle;
+	display: inline-block;
+	font-size: 13px;
+}
+
+
+@media only screen and (max-width : 1200px) {
+
+
+}
+
+@media only screen and (max-width : 768px) {
+
+ }
+
+@media only screen and (max-width : 480px) {
+
+ }
+
+@media only screen and (max-width : 320px) {
+        
+}
